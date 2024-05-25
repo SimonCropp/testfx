@@ -7,17 +7,17 @@
 
 // Copyright(c) 2016, Alexandre Mutel
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without modification
 // , are permitted provided that the following conditions are met:
-// 
+//
 // 1. Redistributions of source code must retain the above copyright notice, this
 //    list of conditions and the following disclaimer.
-// 
+//
 // 2. Redistributions in binary form must reproduce the above copyright notice,
 //    this list of conditions and the following disclaimer in the documentation
 //    and/or other materials provided with the distribution.
-// 
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 // ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 // WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -29,11 +29,8 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -44,7 +41,7 @@ using Microsoft.Testing.Platform.Helpers;
 // [assembly: InternalsVisibleTo("Jsonite.Tests")]
 
 // ----------------------------------------------------------------------------
-// This is a single file version of a fast, simple and accurate JSON serializer 
+// This is a single file version of a fast, simple and accurate JSON serializer
 // and deserializer.
 // The serializer should be compatible with the ECMA-404 http://json.org
 // And the RFC-4627: https://tools.ietf.org/html/rfc4627
@@ -57,7 +54,7 @@ using Microsoft.Testing.Platform.Helpers;
 //                             Version history
 // ----------------------------------------------------------------------------
 // Version 1.0                                                xoofx, 2016-02-07
-// - Initial version, serializer and deserializer to a simple object 
+// - Initial version, serializer and deserializer to a simple object
 //   graph. Method for validating a json text.
 // ----------------------------------------------------------------------------
 namespace Jsonite
@@ -1359,7 +1356,7 @@ namespace Jsonite
         void OnDeserializeRaiseParsingError(int offset, int line, int column, string message, Exception inner);
 
         /// <summary>
-        /// Called when serializing an object, to determine whether the object is an array or a simple object (with members/properties). 
+        /// Called when serializing an object, to determine whether the object is an array or a simple object (with members/properties).
         /// This method is then used to correctly route to <see cref="OnSerializeGetObjectMembers"/> or <see cref="OnSerializeGetArrayItems"/>.
         /// </summary>
         /// <param name="obj">The object instance being serialized</param>

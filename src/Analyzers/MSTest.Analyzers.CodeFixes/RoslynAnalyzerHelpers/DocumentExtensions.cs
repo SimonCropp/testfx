@@ -2,10 +2,6 @@
 
 #if !MICROSOFT_CODEANALYSIS_PUBLIC_API_ANALYZERS
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-
 using Microsoft.CodeAnalysis;
 
 namespace Analyzer.Utilities
