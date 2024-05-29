@@ -22,7 +22,7 @@ public interface ICommandLineOptionsProvider : IExtension
     /// <param name="commandOption">The command option.</param>
     /// <param name="arguments">The arguments provided for the command option.</param>
     /// <returns>The result of the validation.</returns>
-    Task<ValidationResult> ValidateOptionArgumentsAsync(CommandLineOption commandOption, string[] arguments);
+    Task<ValidationResult> ValidateOptionArgumentsAsync(CommandLineOption commandOption, IReadOnlyList<string> arguments);
 
     /// <summary>
     /// Validate that the command line options are valid in the context of each other.

@@ -83,7 +83,7 @@ internal sealed class PlatformCommandLineProvider : ICommandLineOptionsProvider
     public IReadOnlyCollection<CommandLineOption> GetCommandLineOptions()
         => PlatformCommandLineProviderCache;
 
-    public Task<ValidationResult> ValidateOptionArgumentsAsync(CommandLineOption commandOption, string[] arguments)
+    public Task<ValidationResult> ValidateOptionArgumentsAsync(CommandLineOption commandOption, IReadOnlyList<string> arguments)
     {
         if (commandOption.Name == DiagnosticVerbosityOptionKey)
         {
@@ -124,9 +124,9 @@ internal sealed class PlatformCommandLineProvider : ICommandLineOptionsProvider
         return int.Parse(arguments[0], CultureInfo.InvariantCulture);
     }
 
-    private static Task<ValidationResult> IsMinimumExpectedTestsOptionValidAsync(CommandLineOption option, string[] arguments)
+    private static Task<ValidationResult> IsMinimumExpectedTestsOptionValidAsync(CommandLineOption option, IReadOnlyList<string> arguments)
         => option.Name == MinimumExpectedTestsOptionKey
-            && (arguments.Length != 1 || !int.TryParse(arguments[0], out int value) || value == 0)
+            && (arguments.Count != 1 || !int.TryParse(arguments[0], out int value) || value == 0)
             ? ValidationResult.InvalidTask(PlatformResources.PlatformCommandLineMinimumExpectedTestsOptionSingleArgument)
             : ValidationResult.ValidTask;
 

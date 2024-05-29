@@ -33,7 +33,7 @@ internal sealed class TreeNodeFilterCommandLineOptionsProvider(IExtension extens
             new(TreenodeFilter, PlatformResources.TreeNodeFilterDescription, ArgumentArity.ExactlyOne, false),
         };
 
-    public Task<ValidationResult> ValidateOptionArgumentsAsync(CommandLineOption commandOption, string[] arguments)
+    public Task<ValidationResult> ValidateOptionArgumentsAsync(CommandLineOption commandOption, IReadOnlyList<string> arguments)
         => ValidationResult.ValidTask;
 
     public Task<ValidationResult> ValidateCommandLineOptionsAsync(ICommandLineOptions commandLineOptions)

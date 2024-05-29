@@ -212,7 +212,7 @@ internal sealed class CommandLineHandler(string[] args, CommandLineParseResult p
             int arity = 0;
             foreach (OptionRecord optionEntry in groupedOptions)
             {
-                arity += optionEntry.Arguments.Length;
+                arity += optionEntry.Arguments.Count;
             }
 
             string optionName = groupedOptions.Key;

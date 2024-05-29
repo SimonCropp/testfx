@@ -32,6 +32,6 @@ internal struct CommandLineOptionsProviderCache(ICommandLineOptionsProvider comm
     public readonly Task<ValidationResult> ValidateCommandLineOptionsAsync(ICommandLineOptions commandLineOptions)
         => _commandLineOptionsProvider.ValidateCommandLineOptionsAsync(commandLineOptions);
 
-    public readonly Task<ValidationResult> ValidateOptionArgumentsAsync(CommandLineOption commandOption, string[] arguments)
+    public readonly Task<ValidationResult> ValidateOptionArgumentsAsync(CommandLineOption commandOption, IReadOnlyList<string> arguments)
         => _commandLineOptionsProvider.ValidateOptionArgumentsAsync(commandOption, arguments);
 }
