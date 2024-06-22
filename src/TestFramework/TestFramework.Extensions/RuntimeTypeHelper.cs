@@ -49,7 +49,7 @@ internal class RuntimeTypeHelper
     {
         int depth = 0;
 
-        Type currentType = t;
+        Type? currentType = t;
         do
         {
             depth++;
