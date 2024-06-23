@@ -25,24 +25,16 @@ public class TempDirectory : IDisposable
         _cleanup = cleanup;
     }
 
-    ~TempDirectory() => Clean();
-
     public string Path { get; }
 
     public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-
-    protected virtual void Dispose(bool disposing)
     {
         if (_isDisposed)
         {
             return;
         }
 
-        if (disposing && _cleanup)
+        if (_cleanup)
         {
             Clean();
         }
