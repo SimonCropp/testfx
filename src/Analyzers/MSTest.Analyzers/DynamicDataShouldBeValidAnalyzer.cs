@@ -12,6 +12,9 @@ using MSTest.Analyzers.Helpers;
 
 namespace MSTest.Analyzers;
 
+/// <summary>
+/// MSTEST0018: <inheritdoc cref="Resources.DynamicDataShouldBeValidTitle"/>.
+/// </summary>
 [DiagnosticAnalyzer(LanguageNames.CSharp, LanguageNames.VisualBasic)]
 public sealed class DynamicDataShouldBeValidAnalyzer : DiagnosticAnalyzer
 {
@@ -202,8 +205,7 @@ public sealed class DynamicDataShouldBeValidAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        if (!member.IsStatic
-            || member.DeclaredAccessibility != Accessibility.Public)
+        if (!member.IsStatic)
         {
             context.ReportDiagnostic(attributeSyntax.CreateDiagnostic(DataMemberSignatureRule, declaringType.Name, memberName));
             return;
@@ -218,23 +220,29 @@ public sealed class DynamicDataShouldBeValidAnalyzer : DiagnosticAnalyzer
         }
 
         // Validate member return type.
-        if (member.GetMemberType() is not INamedTypeSymbol memberType)
+        ITypeSymbol? memberTypeSymbol = member.GetMemberType();
+        if (memberTypeSymbol is INamedTypeSymbol memberNamedType)
         {
-            return;
-        }
+            if (!SymbolEqualityComparer.Default.Equals(memberNamedType.ConstructedFrom, ienumerableTypeSymbol)
+                || memberNamedType.TypeArguments.Length != 1)
+            {
+                context.ReportDiagnostic(attributeSyntax.CreateDiagnostic(MemberTypeRule, declaringType.Name, memberName));
+                return;
+            }
 
-        if (!SymbolEqualityComparer.Default.Equals(memberType.ConstructedFrom, ienumerableTypeSymbol)
-            || memberType.TypeArguments.Length != 1)
-        {
-            context.ReportDiagnostic(attributeSyntax.CreateDiagnostic(MemberTypeRule, declaringType.Name, memberName));
-            return;
+            ITypeSymbol collectionBoundType = memberNamedType.TypeArguments[0];
+            if (!collectionBoundType.Inherits(itupleTypeSymbol)
+                && collectionBoundType is not IArrayTypeSymbol)
+            {
+                context.ReportDiagnostic(attributeSyntax.CreateDiagnostic(MemberTypeRule, declaringType.Name, memberName));
+            }
         }
-
-        ITypeSymbol collectionBoundType = memberType.TypeArguments[0];
-        if (!collectionBoundType.Inherits(itupleTypeSymbol)
-            && (collectionBoundType is not IArrayTypeSymbol arrayTypeSymbol || arrayTypeSymbol.ElementType.SpecialType != SpecialType.System_Object))
+        else if (memberTypeSymbol is IArrayTypeSymbol arrayType)
         {
-            context.ReportDiagnostic(attributeSyntax.CreateDiagnostic(MemberTypeRule, declaringType.Name, memberName));
+            if (arrayType.ElementType is not IArrayTypeSymbol)
+            {
+                context.ReportDiagnostic(attributeSyntax.CreateDiagnostic(MemberTypeRule, declaringType.Name, memberName));
+            }
         }
     }
 

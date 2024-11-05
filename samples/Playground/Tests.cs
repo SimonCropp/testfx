@@ -15,14 +15,10 @@ public class TestClass
     public TestContext TestContext { get; set; }
 
     [TestMethod]
-    public void Test()
-    {
-    }
+    public void Test() => TestContext.AddResultFile(@"c:\hello2");
 
     [TestMethod]
-    public void Test2()
-    {
-    }
+    public void Test2() => Assert.AreEqual(1, 0, "few");
 
     [TestMethod]
     public void Test3()
