@@ -344,6 +344,5 @@ internal static class TestCaseFilterFactory
         Or,
         And,
         OpenBrace,
-        CloseBrace,
     }
 }

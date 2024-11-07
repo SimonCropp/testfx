@@ -17,7 +17,6 @@ public class DataRowTests_DerivedClass : DataRowTests_BaseClass
         Beta,
         Gamma,
         Delta,
-        Epsilon,
     }
 
     [TestCategory("DataRowSimple")]

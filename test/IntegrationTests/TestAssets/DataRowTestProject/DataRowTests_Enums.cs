@@ -17,7 +17,6 @@ public class DataRowTests_Enums
         Beta,
         Gamma,
         Delta,
-        Epsilon,
     }
 
     public enum ByteEnum : byte
@@ -26,7 +25,6 @@ public class DataRowTests_Enums
         Beta,
         Gamma,
         Delta,
-        Epsilon,
     }
 
     public enum ShortEnum : short
@@ -35,7 +33,6 @@ public class DataRowTests_Enums
         Beta,
         Gamma,
         Delta,
-        Epsilon,
     }
 
     public enum UShortEnum : ushort
@@ -44,7 +41,6 @@ public class DataRowTests_Enums
         Beta,
         Gamma,
         Delta,
-        Epsilon,
     }
 
     public enum IntEnum
@@ -53,7 +49,6 @@ public class DataRowTests_Enums
         Beta,
         Gamma,
         Delta,
-        Epsilon,
     }
 
     public enum UIntEnum : uint
@@ -62,7 +57,6 @@ public class DataRowTests_Enums
         Beta,
         Gamma,
         Delta,
-        Epsilon,
     }
 
     public enum LongEnum : long
@@ -71,7 +65,6 @@ public class DataRowTests_Enums
         Beta,
         Gamma,
         Delta,
-        Epsilon,
     }
 
     public enum ULongEnum : ulong
@@ -80,7 +73,6 @@ public class DataRowTests_Enums
         Beta,
         Gamma,
         Delta,
-        Epsilon,
     }
 
     #region Basic Tests
