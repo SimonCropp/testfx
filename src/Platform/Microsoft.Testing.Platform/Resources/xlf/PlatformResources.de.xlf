@@ -2,6 +2,16 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="de" original="../PlatformResources.resx">
     <body>
+      <trans-unit id="AbortForMaxFailedTestsCapabilityNotAvailable">
+        <source>The current test framework does not implement 'IGracefulStopTestExecutionCapability' which is required for '--maximum-failed-tests' feature.</source>
+        <target state="translated">Das aktuelle Testframework implementiert nicht "IGracefulStopTestExecutionCapability", das für das Feature "--maximum-failed-tests" erforderlich ist.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AbortForMaxFailedTestsDescription">
+        <source>Extension used to support '--maximum-failed-tests'. When a given failures threshold is reached, the test run will be aborted.</source>
+        <target state="translated">Erweiterung zur Unterstützung von "--maximum-failed-tests". Wenn ein angegebener Schwellenwert für Fehler erreicht ist, wird der Testlauf abgebrochen.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Aborted">
         <source>Aborted</source>
         <target state="translated">Abgebrochen</target>
@@ -371,6 +381,11 @@
         <target state="translated">Die ILoggerFactory wurde noch nicht erstellt.</target>
         <note />
       </trans-unit>
+      <trans-unit id="MaxFailedTestsMustBePositive">
+        <source>The option '--maximum-failed-tests' must be a positive integer. The value '{0}' is not valid.</source>
+        <target state="translated">Die Option "--maximum-failed-tests" muss eine positive ganze Zahl sein. Der Wert '{0}' ist ungültig.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="MessageBusNotReady">
         <source>The message bus has not been built yet or is no more usable at this stage.</source>
         <target state="translated">Der Nachrichtenbus wurde noch nicht erstellt oder kann zu diesem Zeitpunkt nicht mehr verwendet werden.</target>
@@ -384,6 +399,16 @@
       <trans-unit id="MissingClientPortFoJsonRpc">
         <source>Expected --client-port when jsonRpc protocol is used.</source>
         <target state="translated">"--client-port" wird erwartet, wenn das jsonRpc-Protokoll verwendet wird.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ActiveTestsRunning_MoreTestsCount">
+        <source>and {0} more</source>
+        <target state="translated">und {0} weitere</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ActiveTestsRunning_FullTestsCount">
+        <source>{0} tests running</source>
+        <target state="translated">{0} ausgeführten Tests</target>
         <note />
       </trans-unit>
       <trans-unit id="NoSerializerRegisteredWithIdErrorMessage">
@@ -525,6 +550,11 @@ Die verfügbaren Werte sind "Trace", "Debug", "Information", "Warning", "Error" 
         <target state="translated">Zeigen Sie .NET-Testanwendungsinformationen an.</target>
         <note />
       </trans-unit>
+      <trans-unit id="PlatformCommandLineMaxFailedTestsOptionDescription">
+        <source>Specifies a maximum number of test failures that, when exceeded, will abort the test run.</source>
+        <target state="translated">Gibt die maximale Anzahl von Testfehlern an, bei deren Überschreiten der Testlauf abgebrochen wird.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="PlatformCommandLineMinimumExpectedTestsIncompatibleDiscoverTests">
         <source>'--list-tests' and '--minimum-expected-tests' are incompatible options</source>
         <target state="translated">"--list-tests" und "--minimum-expected-tests" sind inkompatible Optionen.</target>
@@ -612,6 +642,11 @@ Nimmt ein Argument als Zeichenfolge im Format &lt;value&gt;[h|m|s], wobei "value
         <source>Process should have exited before we can determine this value</source>
         <target state="translated">Der Prozess hätte beendet werden müssen, bevor dieser Wert ermittelt werden kann</target>
         <note />
+      </trans-unit>
+      <trans-unit id="ReachedMaxFailedTestsMessage">
+        <source>Test session is aborting due to reaching failures ('{0}') specified by the '--maximum-failed-tests' option.</source>
+        <target state="translated">Die Testsitzung wird aufgrund von Erreichensfehlern ('{0}') abgebrochen, die durch die Option "--maximum-failed-tests" angegeben wurden.</target>
+        <note>{0} is the number of max failed tests.</note>
       </trans-unit>
       <trans-unit id="RetryFailedAfterTriesErrorMessage">
         <source>Retry failed after {0} times</source>

@@ -20,10 +20,12 @@ namespace Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.Execution;
 /// <summary>
 /// Defines the TestClassInfo object.
 /// </summary>
+#if RELEASE
 #if NET6_0_OR_GREATER
 [Obsolete(Constants.PublicTypeObsoleteMessage, DiagnosticId = "MSTESTOBS")]
 #else
 [Obsolete(Constants.PublicTypeObsoleteMessage)]
+#endif
 #endif
 public class TestClassInfo
 {
@@ -252,6 +254,7 @@ public class TestClassInfo
         // If no class initialize and no base class initialize, return
         if (ClassInitializeMethod is null && BaseClassInitMethods.Count == 0)
         {
+            IsClassInitializeExecuted = true;
             return;
         }
 
@@ -558,8 +561,10 @@ public class TestClassInfo
         lock (_testClassExecuteSyncObject)
         {
             if (IsClassCleanupExecuted
-                // If there is a ClassInitialize method and it has not been executed, then we should not execute ClassCleanup
-                || (!IsClassInitializeExecuted && ClassInitializeMethod is not null))
+                // If ClassInitialize method has not been executed, then we should not execute ClassCleanup
+                // Note that if there is no ClassInitialze method at all, we will still set
+                // IsClassInitializeExecuted to true in RunClassInitialize
+                || !IsClassInitializeExecuted)
             {
                 return;
             }
