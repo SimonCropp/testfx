@@ -27,7 +27,7 @@ internal class TestablePlatformServiceProvider : IPlatformServiceProvider
         MockTraceListener = new Mock<ITraceListener>();
         MockTraceListenerManager = new Mock<ITraceListenerManager>();
         MockThreadOperations = new Mock<IThreadOperations>();
-        TestTools.UnitTesting.DynamicDataProvider.Instance = SourceGeneratorToggle.UseSourceGenerator
+        UTF.DynamicDataProvider.Instance = SourceGeneratorToggle.UseSourceGenerator
             ? new SourceGeneratedDynamicDataOperations()
             : new DynamicDataOperations();
     }
@@ -125,6 +125,8 @@ internal class TestablePlatformServiceProvider : IPlatformServiceProvider
     public ITestDataSource TestDataSource => MockTestDataSource.Object;
 
     public TestRunCancellationToken TestRunCancellationToken { get; set; }
+
+    public bool IsGracefulStopRequested { get; set; }
 
     public ITestContext GetTestContext(ITestMethod testMethod, StringWriter writer, IDictionary<string, object> properties, IMessageLogger messageLogger, UTF.UnitTestOutcome outcome)
     {

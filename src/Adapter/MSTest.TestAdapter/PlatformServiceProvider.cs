@@ -27,11 +27,11 @@ internal sealed class PlatformServiceProvider : IPlatformServiceProvider
 #if !WINDOWS_UWP
         // Set the provider that is used by DynamicDataAttribute when generating data, to allow substituting functionality
         // in TestFramework without having to put all the stuff in that library.
-        TestTools.UnitTesting.DynamicDataProvider.Instance = SourceGeneratorToggle.UseSourceGenerator
+        UTF.DynamicDataProvider.Instance = SourceGeneratorToggle.UseSourceGenerator
             ? new SourceGeneratedDynamicDataOperations()
             : new DynamicDataOperations();
 #else
-        TestTools.UnitTesting.DynamicDataProvider.Instance = new DynamicDataOperations();
+        UTF.DynamicDataProvider.Instance = new DynamicDataOperations();
 #endif
 
     /// <summary>
@@ -140,6 +140,8 @@ internal sealed class PlatformServiceProvider : IPlatformServiceProvider
     /// Gets or sets an instance to the platform service for cancellation token supporting cancellation of a test run.
     /// </summary>
     public TestRunCancellationToken? TestRunCancellationToken { get; set; }
+
+    public bool IsGracefulStopRequested { get; set; }
 
     /// <summary>
     /// Gets or sets the instance for the platform service.

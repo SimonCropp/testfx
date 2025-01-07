@@ -31,7 +31,22 @@ public static class UnitTestOutcomeExtensions
             UTF.UnitTestOutcome.Timeout => UnitTestOutcome.Timeout,
             UTF.UnitTestOutcome.NotRunnable => UnitTestOutcome.NotRunnable,
             UTF.UnitTestOutcome.NotFound => UnitTestOutcome.NotFound,
+            UTF.UnitTestOutcome.Ignored => UnitTestOutcome.Ignored,
             _ => UnitTestOutcome.Error,
+        };
+
+    internal static UTF.UnitTestOutcome ToAdapterOutcome(this UnitTestOutcome outcome)
+        => outcome switch
+        {
+            UnitTestOutcome.Failed => UTF.UnitTestOutcome.Failed,
+            UnitTestOutcome.Inconclusive => UTF.UnitTestOutcome.Inconclusive,
+            UnitTestOutcome.InProgress => UTF.UnitTestOutcome.InProgress,
+            UnitTestOutcome.Passed => UTF.UnitTestOutcome.Passed,
+            UnitTestOutcome.Timeout => UTF.UnitTestOutcome.Timeout,
+            UnitTestOutcome.NotRunnable => UTF.UnitTestOutcome.NotRunnable,
+            UnitTestOutcome.NotFound => UTF.UnitTestOutcome.NotFound,
+            UnitTestOutcome.Ignored => UTF.UnitTestOutcome.Ignored,
+            _ => UTF.UnitTestOutcome.Error,
         };
 
     /// <summary>
