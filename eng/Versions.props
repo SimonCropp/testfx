@@ -1,15 +1,13 @@
 <Project>
   <PropertyGroup Label="Version settings">
     <!-- MSTest version -->
-    <VersionPrefix>3.8.0</VersionPrefix>
+    <VersionPrefix>3.9.0</VersionPrefix>
     <!-- Testing Platform version -->
-    <TestingPlatformVersionPrefix>1.6.0</TestingPlatformVersionPrefix>
+    <TestingPlatformVersionPrefix>1.7.0</TestingPlatformVersionPrefix>
     <PreReleaseVersionLabel>preview</PreReleaseVersionLabel>
   </PropertyGroup>
   <PropertyGroup Label="MSTest prod dependencies - darc updated">
     <MicrosoftDotNetBuildTasksTemplatingPackageVersion>10.0.0-beta.24606.6</MicrosoftDotNetBuildTasksTemplatingPackageVersion>
-    <MicrosoftTestingExtensionsCodeCoverageVersion>17.14.0-preview.25106.2</MicrosoftTestingExtensionsCodeCoverageVersion>
-    <!-- comment to facilitate merge conflicts -->
-    <MSTestEngineVersion>1.0.0-alpha.25104.1</MSTestEngineVersion>
+    <MicrosoftTestingExtensionsCodeCoverageVersion>17.14.1-preview.25114.2</MicrosoftTestingExtensionsCodeCoverageVersion>
   </PropertyGroup>
 </Project>

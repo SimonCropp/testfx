@@ -203,7 +203,6 @@ public class TestClassInfo
     public MethodInfo? TestInitializeMethod
     {
         get;
-
         internal set
         {
             if (field != null)
@@ -255,9 +254,7 @@ public class TestClassInfo
         // If no class initialize and no base class initialize, return
         if (ClassInitializeMethod is null && BaseClassInitMethods.Count == 0)
         {
-            // This assert fails only in unit tests which call RunClassInitialize
-            // directly, bypassing the logic in GetResultOrRunClassInitialize.
-            // DebugEx.Assert(false, "Caller shouldn't call us if nothing to execute");
+            DebugEx.Assert(false, "Caller shouldn't call us if nothing to execute");
             IsClassInitializeExecuted = true;
             return;
         }
@@ -274,9 +271,7 @@ public class TestClassInfo
         string? failedClassInitializeMethodName = string.Empty;
 
         // If class initialization is not done, then do it.
-        // This assert fails only in unit tests which call RunClassInitialize
-        // directly, bypassing the logic in GetResultOrRunClassInitialize.
-        // DebugEx.Assert(!IsClassInitializeExecuted, "Caller shouldn't call us if it was executed.");
+        DebugEx.Assert(!IsClassInitializeExecuted, "Caller shouldn't call us if it was executed.");
         if (!IsClassInitializeExecuted)
         {
             try
