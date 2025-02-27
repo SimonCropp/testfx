@@ -448,7 +448,7 @@ internal sealed class TestHostBuilder(IFileSystem fileSystem, IRuntimeFeature ru
             systemEnvironment);
 
         // Build and register the test application lifecycle callbacks.
-        ITestApplicationLifecycleCallbacks[] testApplicationLifecycleCallback =
+        List<ITestApplicationLifecycleCallbacks> testApplicationLifecycleCallback =
             await ((TestHostManager)TestHost).BuildTestApplicationLifecycleCallbackAsync(serviceProvider);
         serviceProvider.AddServices(testApplicationLifecycleCallback);
 
@@ -678,8 +678,8 @@ internal sealed class TestHostBuilder(IFileSystem fileSystem, IRuntimeFeature ru
         {
             // We keep the bag of the already created composite service factory to reuse the instance.
             List<ICompositeExtensionFactory> newBuiltCompositeServices = [];
-            (IExtension Consumer, int RegistrationOrder)[] consumers = await testFrameworkBuilderData.TestSessionManager.BuildDataConsumersAsync(serviceProvider, newBuiltCompositeServices);
-            (IExtension TestSessionLifetimeHandler, int RegistrationOrder)[] sessionLifeTimeHandlers = await testFrameworkBuilderData.TestSessionManager.BuildTestSessionLifetimeHandleAsync(serviceProvider, newBuiltCompositeServices);
+            List<(IExtension Consumer, int RegistrationOrder)> consumers = await testFrameworkBuilderData.TestSessionManager.BuildDataConsumersAsync(serviceProvider, newBuiltCompositeServices);
+            List<(IExtension TestSessionLifetimeHandler, int RegistrationOrder)> sessionLifeTimeHandlers = await testFrameworkBuilderData.TestSessionManager.BuildTestSessionLifetimeHandleAsync(serviceProvider, newBuiltCompositeServices);
 
             // Register the test session lifetime handlers for the notifications
             testSessionLifetimeHandlers.AddRange(sessionLifeTimeHandlers.OrderBy(x => x.RegistrationOrder).Select(x => (ITestSessionLifetimeHandler)x.TestSessionLifetimeHandler));
