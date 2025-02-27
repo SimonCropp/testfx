@@ -116,16 +116,20 @@ internal sealed class TestHostManager : ITestHostManager
     }
 
     public void AddDataConsumer<T>(CompositeExtensionFactory<T> compositeServiceFactory)
-        where T : class, IDataConsumer
+        where T : class, IDataConsumer =>
+        AddCompositeServiceFactory(compositeServiceFactory, _dataConsumersCompositeServiceFactories);
+
+    private void AddCompositeServiceFactory<T>(CompositeExtensionFactory<T> factory, List<ICompositeExtensionFactory> factories)
+        where T : class, IExtension
     {
-        Guard.NotNull(compositeServiceFactory);
-        if (_dataConsumersCompositeServiceFactories.Contains(compositeServiceFactory))
+        Guard.NotNull(factory);
+        if (factories.Contains(factory))
         {
             throw new ArgumentException(PlatformResources.CompositeServiceFactoryInstanceAlreadyRegistered);
         }
 
-        _dataConsumersCompositeServiceFactories.Add(compositeServiceFactory);
-        _factoryOrdering.Add(compositeServiceFactory);
+        factories.Add(factory);
+        _factoryOrdering.Add(factory);
     }
 
     internal async Task<List<(IExtension Consumer, int RegistrationOrder)>> BuildDataConsumersAsync(ServiceProvider serviceProvider, List<ICompositeExtensionFactory> alreadyBuiltServices)
@@ -195,14 +199,7 @@ internal sealed class TestHostManager : ITestHostManager
     public void AddTestSessionLifetimeHandle<T>(CompositeExtensionFactory<T> compositeServiceFactory)
         where T : class, ITestSessionLifetimeHandler
     {
-        Guard.NotNull(compositeServiceFactory);
-        if (_testSessionLifetimeHandlerCompositeFactories.Contains(compositeServiceFactory))
-        {
-            throw new ArgumentException(PlatformResources.CompositeServiceFactoryInstanceAlreadyRegistered);
-        }
-
-        _testSessionLifetimeHandlerCompositeFactories.Add(compositeServiceFactory);
-        _factoryOrdering.Add(compositeServiceFactory);
+        AddCompositeServiceFactory(compositeServiceFactory, _testSessionLifetimeHandlerCompositeFactories);
     }
 
     internal async Task<List<(IExtension TestSessionLifetimeHandler, int RegistrationOrder)>> BuildTestSessionLifetimeHandleAsync(ServiceProvider serviceProvider, List<ICompositeExtensionFactory> alreadyBuiltServices)
@@ -234,7 +231,7 @@ internal sealed class TestHostManager : ITestHostManager
                 // Create the new fresh instance
                 var instance = (IExtension)compositeFactoryInstance.GetInstance(serviceProvider);
 
-                ThrowIfRegistered(testSessionLifetimeHandlers.Select(_ => _.TestSessionLifetimeHandler), service);
+                ThrowIfRegistered(testSessionLifetimeHandlers.Select(_ => _.TestSessionLifetimeHandler), instance);
 
                 await InitializeIfEnabled(instance);
 
