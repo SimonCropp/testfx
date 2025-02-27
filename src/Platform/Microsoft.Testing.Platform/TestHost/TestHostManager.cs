@@ -91,21 +91,21 @@ internal sealed class TestHostManager : ITestHostManager
 
     internal async Task<List<ITestApplicationLifecycleCallbacks>> BuildTestApplicationLifecycleCallbackAsync(ServiceProvider serviceProvider)
     {
-        List<ITestApplicationLifecycleCallbacks> testApplicationLifecycleCallbacks = [];
+        List<ITestApplicationLifecycleCallbacks> callbacks = [];
         foreach (Func<IServiceProvider, ITestApplicationLifecycleCallbacks> testApplicationLifecycleCallbacksFactory in _testApplicationLifecycleCallbacksFactories)
         {
             ITestApplicationLifecycleCallbacks service = testApplicationLifecycleCallbacksFactory(serviceProvider);
 
-            ThrowIfRegistered(testApplicationLifecycleCallbacks, service);
+            ThrowIfRegistered(callbacks, service);
 
             if (await InitializeIfEnabled(service))
             {
                 // Register the extension for usage
-                testApplicationLifecycleCallbacks.Add(service);
+                callbacks.Add(service);
             }
         }
 
-        return testApplicationLifecycleCallbacks;
+        return callbacks;
     }
 
     public void AddDataConsumer(Func<IServiceProvider, IDataConsumer> dataConsumerFactory)
@@ -151,9 +151,9 @@ internal sealed class TestHostManager : ITestHostManager
         foreach (ICompositeExtensionFactory compositeServiceFactory in _dataConsumersCompositeServiceFactories)
         {
             ICompositeExtensionFactory? compositeFactoryInstance;
-
+            var factoryType = compositeServiceFactory.GetType();
             // We check if the same service is already built in some other build phase
-            if ((compositeFactoryInstance = alreadyBuiltServices.SingleOrDefault(x => x.GetType() == compositeServiceFactory.GetType())) is null)
+            if ((compositeFactoryInstance = alreadyBuiltServices.SingleOrDefault(x => x.GetType() == factoryType)) is null)
             {
                 // We clone the instance because we want to have fresh instance per BuildTestApplicationLifecycleCallbackAsync call
                 compositeFactoryInstance = (ICompositeExtensionFactory)compositeServiceFactory.Clone();
@@ -197,10 +197,8 @@ internal sealed class TestHostManager : ITestHostManager
     }
 
     public void AddTestSessionLifetimeHandle<T>(CompositeExtensionFactory<T> compositeServiceFactory)
-        where T : class, ITestSessionLifetimeHandler
-    {
+        where T : class, ITestSessionLifetimeHandler =>
         AddCompositeServiceFactory(compositeServiceFactory, _testSessionLifetimeHandlerCompositeFactories);
-    }
 
     internal async Task<List<(IExtension TestSessionLifetimeHandler, int RegistrationOrder)>> BuildTestSessionLifetimeHandleAsync(ServiceProvider serviceProvider, List<ICompositeExtensionFactory> alreadyBuiltServices)
     {
