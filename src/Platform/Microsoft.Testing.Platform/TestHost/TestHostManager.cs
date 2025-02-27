@@ -75,7 +75,6 @@ internal sealed class TestHostManager : ITestHostManager
 
         ITestExecutionFilterFactory testExecutionFilterFactory = _testExecutionFilterFactory(serviceProvider);
 
-        // We initialize only if enabled
         if (await InitializeIfEnabled(testExecutionFilterFactory))
         {
             return ActionResult.Ok(testExecutionFilterFactory);
@@ -99,7 +98,6 @@ internal sealed class TestHostManager : ITestHostManager
 
             ThrowIfRegistered(testApplicationLifecycleCallbacks, service);
 
-            // We initialize only if enabled
             if (await InitializeIfEnabled(service))
             {
                 // Register the extension for usage
@@ -139,7 +137,6 @@ internal sealed class TestHostManager : ITestHostManager
 
             ThrowIfRegistered(dataConsumers.Select(_ => _.Consumer), service);
 
-            // We initialize only if enabled
             if (await InitializeIfEnabled(service))
             {
                 // Register the extension for usage
@@ -162,7 +159,6 @@ internal sealed class TestHostManager : ITestHostManager
 
                 ThrowIfRegistered(dataConsumers.Select(_ => _.Consumer), instance);
 
-                // We initialize only if enabled
                 await InitializeIfEnabled(instance);
 
                 // Add to the list of shared singletons
@@ -218,7 +214,6 @@ internal sealed class TestHostManager : ITestHostManager
 
             ThrowIfRegistered(testSessionLifetimeHandlers.Select(_ => _.TestSessionLifetimeHandler), service);
 
-            // We initialize only if enabled
             if (await InitializeIfEnabled(service))
             {
                 // Register the extension for usage
