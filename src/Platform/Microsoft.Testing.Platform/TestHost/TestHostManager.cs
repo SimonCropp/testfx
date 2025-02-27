@@ -239,12 +239,7 @@ internal sealed class TestHostManager : ITestHostManager
                 // Create the new fresh instance
                 var instance = (IExtension)compositeFactoryInstance.GetInstance(serviceProvider);
 
-                // Check if we have already extensions of the same type with same id registered
-                if (testSessionLifetimeHandlers.Any(x => x.TestSessionLifetimeHandler.Uid == instance.Uid))
-                {
-                    (IExtension testSessionLifetimeHandler, int _) = testSessionLifetimeHandlers.Single(x => x.TestSessionLifetimeHandler.Uid == instance.Uid);
-                    throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, PlatformResources.ExtensionWithSameUidAlreadyRegisteredErrorMessage, instance.Uid, testSessionLifetimeHandler.GetType()));
-                }
+                ThrowIfRegistered(testSessionLifetimeHandlers.Select(_ => _.TestSessionLifetimeHandler), service);
 
                 await InitializeIfEnabled(instance);
 
