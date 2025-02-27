@@ -97,12 +97,7 @@ internal sealed class TestHostManager : ITestHostManager
         {
             ITestApplicationLifecycleCallbacks service = testApplicationLifecycleCallbacksFactory(serviceProvider);
 
-            // Check if we have already extensions of the same type with same id registered
-            if (testApplicationLifecycleCallbacks.Any(x => x.Uid == service.Uid))
-            {
-                ITestApplicationLifecycleCallbacks currentRegisteredExtension = testApplicationLifecycleCallbacks.Single(x => x.Uid == service.Uid);
-                throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, PlatformResources.ExtensionWithSameUidAlreadyRegisteredErrorMessage, service.Uid, currentRegisteredExtension.GetType()));
-            }
+            ThrowIfRegistered(testApplicationLifecycleCallbacks, service);
 
             // We initialize only if enabled
             if (await InitializeIfEnabled(service))
@@ -142,12 +137,7 @@ internal sealed class TestHostManager : ITestHostManager
         {
             IDataConsumer service = dataConsumerFactory(serviceProvider);
 
-            // Check if we have already extensions of the same type with same id registered
-            if (dataConsumers.Any(x => x.Consumer.Uid == service.Uid))
-            {
-                (IExtension consumer, int order) = dataConsumers.Single(x => x.Consumer.Uid == service.Uid);
-                throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, PlatformResources.ExtensionWithSameUidAlreadyRegisteredErrorMessage, service.Uid, consumer.GetType()));
-            }
+            ThrowIfRegistered(dataConsumers.Select(_ => _.Consumer), service);
 
             // We initialize only if enabled
             if (await InitializeIfEnabled(service))
@@ -170,12 +160,7 @@ internal sealed class TestHostManager : ITestHostManager
                 // Create the new fresh instance
                 var instance = (IExtension)compositeFactoryInstance.GetInstance(serviceProvider);
 
-                // Check if we have already extensions of the same type with same id registered
-                if (dataConsumers.Any(x => x.Consumer.Uid == instance.Uid))
-                {
-                    (IExtension consumer, int _) = dataConsumers.Single(x => x.Consumer.Uid == instance.Uid);
-                    throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, PlatformResources.ExtensionWithSameUidAlreadyRegisteredErrorMessage, instance.Uid, consumer.GetType()));
-                }
+                ThrowIfRegistered(dataConsumers.Select(_ => _.Consumer), instance);
 
                 // We initialize only if enabled
                 await InitializeIfEnabled(instance);
@@ -231,12 +216,7 @@ internal sealed class TestHostManager : ITestHostManager
         {
             ITestSessionLifetimeHandler service = testSessionLifetimeHandlerFactory(serviceProvider);
 
-            // Check if we have already extensions of the same type with same id registered
-            if (testSessionLifetimeHandlers.Any(x => x.TestSessionLifetimeHandler.Uid == service.Uid))
-            {
-                (IExtension testSessionLifetimeHandler, int _) = testSessionLifetimeHandlers.Single(x => x.TestSessionLifetimeHandler.Uid == service.Uid);
-                throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, PlatformResources.ExtensionWithSameUidAlreadyRegisteredErrorMessage, service.Uid, testSessionLifetimeHandler.GetType()));
-            }
+            ThrowIfRegistered(testSessionLifetimeHandlers.Select(_ => _.TestSessionLifetimeHandler), service);
 
             // We initialize only if enabled
             if (await InitializeIfEnabled(service))
@@ -291,6 +271,16 @@ internal sealed class TestHostManager : ITestHostManager
         }
 
         return testSessionLifetimeHandlers;
+    }
+
+    private static void ThrowIfRegistered(IEnumerable<IExtension> extensions, IExtension extension)
+    {
+        // Check if we have already extensions of the same type with same id registered
+        var existing = extensions.SingleOrDefault(_ => _.Uid == extension.Uid);
+        if (existing != null)
+        {
+            throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, PlatformResources.ExtensionWithSameUidAlreadyRegisteredErrorMessage, extension.Uid, existing.GetType()));
+        }
     }
 
     private static async Task<bool> InitializeIfEnabled(IExtension instance)
