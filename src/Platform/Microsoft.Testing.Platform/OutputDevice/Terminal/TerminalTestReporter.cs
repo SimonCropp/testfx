@@ -673,13 +673,14 @@ internal sealed partial class TerminalTestReporter : IDisposable
         Match match = GetFrameRegex().Match(stackTraceLine);
         if (match.Success)
         {
-            bool weHaveFilePathAndCodeLine = !RoslynString.IsNullOrWhiteSpace(match.Groups["code"].Value);
+            string code = match.Groups["code"].Value;
+            bool weHaveFilePathAndCodeLine = !RoslynString.IsNullOrWhiteSpace(code);
             terminal.Append(PlatformResources.StackFrameAt);
             terminal.Append(' ');
 
             if (weHaveFilePathAndCodeLine)
             {
-                terminal.Append(match.Groups["code"].Value);
+                terminal.Append(code);
             }
             else
             {
@@ -691,10 +692,11 @@ internal sealed partial class TerminalTestReporter : IDisposable
                 terminal.Append(' ');
                 terminal.Append(PlatformResources.StackFrameIn);
                 terminal.Append(' ');
-                if (!RoslynString.IsNullOrWhiteSpace(match.Groups["file"].Value))
+                string file = match.Groups["file"].Value;
+                if (!RoslynString.IsNullOrWhiteSpace(file))
                 {
                     int line = int.TryParse(match.Groups["line"].Value, out int value) ? value : 0;
-                    terminal.AppendLink(match.Groups["file"].Value, line);
+                    terminal.AppendLink(file, line);
 
                     // AppendLink finishes by resetting color
                     terminal.SetColor(TerminalColor.DarkGray);
