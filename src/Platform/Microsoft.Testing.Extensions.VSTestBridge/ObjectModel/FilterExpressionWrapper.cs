@@ -48,7 +48,7 @@ internal sealed class FilterExpressionWrapper
                 // Property value regex is only supported for fast filter,
                 // so we ignore it if no fast filter is constructed.
 
-                // TODO: surface an error message to suer.
+                // TODO: surface an error message to user.
                 string? regexString = options?.FilterRegEx;
                 if (!RoslynString.IsNullOrEmpty(regexString))
                 {
