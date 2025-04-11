@@ -19,11 +19,8 @@ internal sealed class MessageBusProxy : BaseMessageBus, IMessageBus
         await _messageBus.InitAsync();
     }
 
-    public void SetBuiltMessageBus(BaseMessageBus messageBus)
-    {
-        Guard.NotNull(messageBus);
-        _messageBus = messageBus;
-    }
+    public void SetBuiltMessageBus(BaseMessageBus messageBus) =>
+        _messageBus = Guard.NotNull(messageBus);
 
     public override async Task PublishAsync(IDataProducer dataProducer, IData data)
     {

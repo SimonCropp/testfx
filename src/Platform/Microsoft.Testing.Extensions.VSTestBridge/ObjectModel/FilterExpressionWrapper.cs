@@ -31,9 +31,7 @@ internal sealed class FilterExpressionWrapper
     /// </summary>
     public FilterExpressionWrapper(string filterString, FilterOptions? options)
     {
-        Guard.NotNullOrEmpty(filterString);
-
-        FilterString = filterString;
+        FilterString = Guard.NotNullOrEmpty(filterString);
         FilterOptions = options;
 
         try

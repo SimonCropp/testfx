@@ -42,18 +42,13 @@ internal sealed partial class FilterExpression
 
     private FilterExpression(FilterExpression left, FilterExpression right, bool areJoinedByAnd)
     {
-        Guard.NotNull(left);
-        Guard.NotNull(right);
-        _left = left;
-        _right = right;
+        _left = Guard.NotNull(left);
+        _right = Guard.NotNull(right);
         _areJoinedByAnd = areJoinedByAnd;
     }
 
-    private FilterExpression(Condition condition)
-    {
-        Guard.NotNull(condition);
-        _condition = condition;
-    }
+    private FilterExpression(Condition condition) =>
+        _condition = Guard.NotNull(condition);
 
     /// <summary>
     /// Create a new filter expression 'And'ing 'this' with 'filter'.

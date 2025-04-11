@@ -54,12 +54,10 @@ public sealed class TestMethod : ITestMethod
         string fullClassName, string assemblyName, string? displayName,
         TestIdGenerationStrategy testIdGenerationStrategy)
     {
-        Guard.NotNullOrWhiteSpace(assemblyName);
-
         Name = name;
         DisplayName = displayName ?? name;
         FullClassName = fullClassName;
-        AssemblyName = assemblyName;
+        AssemblyName = Guard.NotNullOrWhiteSpace(assemblyName);
 
         if (hierarchyValues is null)
         {

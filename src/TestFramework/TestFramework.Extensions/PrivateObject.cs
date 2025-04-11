@@ -124,8 +124,7 @@ public class PrivateObject
             o = Activator.CreateInstance(type, ConstructorFlags, null, args, null);
         }
 
-        Guard.NotNull(o);
-        _target = o;
+        _target = Guard.NotNull(o);
         RealType = o.GetType();
     }
 
@@ -137,8 +136,7 @@ public class PrivateObject
     [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "obj", Justification = "We don't know anything about the object other than that it's an object, so 'obj' seems reasonable")]
     public PrivateObject(object obj)
     {
-        Guard.NotNull(obj);
-        _target = obj;
+        _target = Guard.NotNull(obj);
         RealType = obj.GetType();
     }
 
@@ -151,8 +149,7 @@ public class PrivateObject
     [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "obj", Justification = "We don't know anything about the object other than that it's an object, so 'obj' seems reasonable")]
     public PrivateObject(object obj, PrivateType type)
     {
-        Guard.NotNull(type);
-        _target = obj;
+        _target = Guard.NotNull(obj);
         RealType = type.ReferencedType;
     }
 
@@ -166,8 +163,7 @@ public class PrivateObject
         get => _target;
         set
         {
-            Guard.NotNull(value);
-            _target = value;
+            _target = Guard.NotNull(value);
             RealType = value.GetType();
         }
     }

@@ -30,8 +30,7 @@ public abstract class VSTestBridgedTestFrameworkBase : ITestFramework, IDataProd
     /// <param name="capabilities">The test framework capabilities.</param>
     protected VSTestBridgedTestFrameworkBase(IServiceProvider serviceProvider, ITestFrameworkCapabilities capabilities)
     {
-        Guard.NotNull(serviceProvider);
-        ServiceProvider = serviceProvider;
+        ServiceProvider = Guard.NotNull(serviceProvider);
         IsTrxEnabled = capabilities.GetCapability<ITrxReportCapability>()?.IsSupported == true;
     }
 
