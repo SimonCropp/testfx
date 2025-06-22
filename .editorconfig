@@ -35,7 +35,11 @@ charset = utf-8
 indent_size = 2
 
 # Xml files
-[*.{xml}]
+[*.xml]
+indent_size = 2
+
+# Xlf files
+[*.xlf]
 indent_size = 2
 
 # YAML files
@@ -427,6 +431,9 @@ dotnet_diagnostic.CA1854.severity = warning
 # Disabled as it's making the code complex to deal with when multi targeting
 # CA1863: Use 'CompositeFormat'
 dotnet_diagnostic.CA1863.severity = none
+
+# CA2007: Consider calling ConfigureAwait on the awaited task
+dotnet_diagnostic.CA2007.severity = warning
 
 # CA2016: Forward the 'CancellationToken' parameter to methods
 dotnet_diagnostic.CA2016.severity = warning
