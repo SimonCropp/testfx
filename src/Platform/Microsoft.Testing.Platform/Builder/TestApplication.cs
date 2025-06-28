@@ -69,7 +69,6 @@ public sealed class TestApplication : ITestApplication
         // We get the time to save it in the logs for testcontrollers troubleshooting.
         SystemClock systemClock = new();
         DateTimeOffset createBuilderStart = systemClock.UtcNow;
-        string createBuilderEntryTime = createBuilderStart.ToString("HH:mm:ss.fff", CultureInfo.InvariantCulture);
         testApplicationOptions ??= new TestApplicationOptions();
 
         SystemConsole systemConsole = new();
@@ -79,7 +78,6 @@ public sealed class TestApplication : ITestApplication
         // First step is to parse the command line from where we get the second input layer.
         // The first one should be the env vars handled autonomously by extensions and part of the test platform.
         CommandLineParseResult parseResult = CommandLineParser.Parse(args, systemEnvironment);
-        TestHostControllerInfo testHostControllerInfo = new(parseResult);
         CurrentTestApplicationModuleInfo testApplicationModuleInfo = new(systemEnvironment, systemProcess);
 
         // Create the UnhandledExceptionHandler that will be set inside the TestHostBuilder.
@@ -87,13 +85,14 @@ public sealed class TestApplication : ITestApplication
         ApplicationStateGuard.Ensure(s_unhandledExceptionHandler is not null);
 
         // First task is to setup the logger if enabled and we take the info from the command line or env vars.
-        ApplicationLoggingState loggingState = CreateFileLoggerIfDiagnosticIsEnabled(parseResult, testApplicationModuleInfo, systemClock, systemEnvironment, new SystemTask(), new SystemConsole());
+        ApplicationLoggingState loggingState = CreateFileLoggerIfDiagnosticIsEnabled(parseResult, testApplicationModuleInfo, systemClock, systemEnvironment, new SystemTask(), systemConsole);
 
         if (loggingState.FileLoggerProvider is not null)
         {
+            TestHostControllerInfo testHostControllerInfo = new(parseResult);
             ILogger logger = loggingState.FileLoggerProvider.CreateLogger(typeof(TestApplication).ToString());
             s_unhandledExceptionHandler.SetLogger(logger);
-            await LogInformationAsync(logger, testApplicationModuleInfo, testHostControllerInfo, systemProcess, systemEnvironment, createBuilderEntryTime, loggingState.IsSynchronousWrite, loggingState.LogLevel, args).ConfigureAwait(false);
+            await LogInformationAsync(logger, testApplicationModuleInfo, testHostControllerInfo, systemProcess, systemEnvironment, createBuilderStart, loggingState.IsSynchronousWrite, loggingState.LogLevel, args).ConfigureAwait(false);
         }
 
         // All checks are fine, create the TestApplication.
@@ -106,7 +105,7 @@ public sealed class TestApplication : ITestApplication
         TestHostControllerInfo testHostControllerInfo,
         SystemProcessHandler processHandler,
         SystemEnvironment environment,
-        string createBuilderEntryTime,
+        DateTimeOffset createBuilderStart,
         bool syncWrite,
         LogLevel loggerLevel,
         string[] args)
@@ -122,6 +121,7 @@ public sealed class TestApplication : ITestApplication
             await logger.LogInformationAsync("Version attribute not found").ConfigureAwait(false);
         }
 
+        string createBuilderEntryTime = createBuilderStart.ToString("HH:mm:ss.fff", CultureInfo.InvariantCulture);
         await logger.LogInformationAsync("Logging mode: " + (syncWrite ? "synchronous" : "asynchronous")).ConfigureAwait(false);
         await logger.LogInformationAsync($"Logging level: {loggerLevel}").ConfigureAwait(false);
         await logger.LogInformationAsync($"CreateBuilderAsync entry time: {createBuilderEntryTime}").ConfigureAwait(false);
