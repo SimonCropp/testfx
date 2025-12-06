@@ -507,6 +507,8 @@ public static partial class AssertExtensions
         return result.ToString();
     }
 
+    static string[] s_collectionTypes = ["List", "IList", "ICollection", "IEnumerable"];
+
     private static bool TryMatchListInitPattern(string input, int startIndex, out string collectionType, out int patternEnd)
     {
         collectionType = string.Empty;
@@ -527,10 +529,9 @@ public static partial class AssertExtensions
         }
 
         // Check for collection type names
-        string[] collectionTypes = ["List", "IList", "ICollection", "IEnumerable"];
         string matchedType = string.Empty;
 
-        foreach (string type in collectionTypes)
+        foreach (string type in s_collectionTypes)
         {
             if (pos + type.Length < input.Length &&
                 input.Substring(pos, type.Length).Equals(type, StringComparison.Ordinal))
