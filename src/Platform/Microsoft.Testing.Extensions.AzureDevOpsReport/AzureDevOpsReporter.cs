@@ -232,10 +232,9 @@ internal sealed class AzureDevOpsReporter :
                     logger.LogTrace($"Path '{file}' is coming from deterministic build.");
                 }
 
-                relativePath = file.Substring(DeterministicBuildRoot.Length);
-
                 if (logger.IsEnabled(LogLevel.Trace))
                 {
+                    relativePath = file.Substring(DeterministicBuildRoot.Length);
                     logger.LogTrace($"Using relative path '{relativePath}'.");
                 }
             }
@@ -246,9 +245,9 @@ internal sealed class AzureDevOpsReporter :
                     logger.LogTrace($"Path '{file}' is in current repo '{repoRoot}'.");
                 }
 
-                relativePath = file.Substring(repoRoot.Length);
                 if (logger.IsEnabled(LogLevel.Trace))
                 {
+                    relativePath = file.Substring(repoRoot.Length);
                     logger.LogTrace($"Using relative path '{relativePath}'.");
                 }
             }
