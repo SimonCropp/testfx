@@ -338,7 +338,7 @@ internal sealed class NamedPipeServer : NamedPipeBase, IServer
             }
         }
 
-        _namedPipeServerStream.Dispose();
+        await _namedPipeServerStream.DisposeAsync().ConfigureAwait(false);
 
         _disposed = true;
     }
