@@ -54,18 +54,18 @@ internal sealed class RetryFailedTestsPipeServer : IDisposable
         {
             FailedUID ??= [];
             FailedUID.Add(failed.Uid);
-            return Task.FromResult((IResponse)VoidResponse.CachedInstance);
+            return Task.FromResult<IResponse>(VoidResponse.CachedInstance);
         }
 
         if (request is GetListOfFailedTestsRequest)
         {
-            return Task.FromResult((IResponse)new GetListOfFailedTestsResponse(_failedTests));
+            return Task.FromResult<IResponse>(new GetListOfFailedTestsResponse(_failedTests));
         }
 
         if (request is TotalTestsRunRequest totalTestsRunRequest)
         {
             TotalTestRan = totalTestsRunRequest.TotalTests;
-            return Task.FromResult((IResponse)VoidResponse.CachedInstance);
+            return Task.FromResult<IResponse>(VoidResponse.CachedInstance);
         }
 
         throw ApplicationStateGuard.Unreachable();

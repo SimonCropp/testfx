@@ -36,7 +36,7 @@ internal sealed class DotnetTestConnection : IPushOnlyProtocol, IDisposable
     public bool IsServerMode => _dotnetTestPipeClient?.IsConnected == true;
 
     public Task<IPushOnlyProtocolConsumer> GetDataConsumerAsync()
-        => Task.FromResult((IPushOnlyProtocolConsumer)new DotnetTestDataConsumer(this, _environment));
+        => Task.FromResult<IPushOnlyProtocolConsumer>(new DotnetTestDataConsumer(this, _environment));
 
     public async Task AfterCommonServiceSetupAsync()
     {
